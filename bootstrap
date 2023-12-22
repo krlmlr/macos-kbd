@@ -6,8 +6,6 @@ cd /Library
 mkdir -p "Keyboard Layouts"
 cd "Keyboard Layouts"
 
-curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/src/apps/PreferencesWindow/Resources/Keyboards/abc.xml"
-
 curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanRussianUbuntu.keylayout"
 curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanUbuntu.icns"
 curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanUbuntu.keylayout"
