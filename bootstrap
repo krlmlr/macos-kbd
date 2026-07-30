@@ -2,10 +2,19 @@
 
 set -e
 
-cd /Library
-mkdir -p "Keyboard Layouts"
-cd "Keyboard Layouts"
+repo="https://raw.githubusercontent.com/krlmlr/macos-kbd/main"
+dest="/Library/Keyboard Layouts"
+files="SwissGermanRussianUbuntu.keylayout SwissGermanUbuntu.icns SwissGermanUbuntu.keylayout"
 
-curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanRussianUbuntu.keylayout"
-curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanUbuntu.icns"
-curl -O "https://raw.githubusercontent.com/krlmlr/macos-kbd/main/SwissGermanUbuntu.keylayout"
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+for file in $files; do
+  curl -fsS -o "$tmp/$file" "$repo/$file"
+done
+
+sudo mkdir -p "$dest"
+
+for file in $files; do
+  sudo install -m 644 "$tmp/$file" "$dest/$file"
+done
