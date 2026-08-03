@@ -2,7 +2,7 @@
 <!DOCTYPE keyboard SYSTEM "file://localhost/System/Library/DTDs/KeyboardLayout.dtd">
 <!---->
 <!--Last edited by Ukelele version 359 on 2023-03-03 at 09:51 (CET)-->
-<keyboard group="126" id="-14899" name="de-ch" maxout="1">
+<keyboard group="0" id="14899" name="de-ch" maxout="1">
     <layouts>
         <layout first="0" last="0" mapSet="ANSI" modifiers="commonModifiers"/>
     </layouts>
