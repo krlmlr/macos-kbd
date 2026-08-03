@@ -32,7 +32,7 @@ The IDs come from the `<keyboard>` element of each `.keylayout` file.
 
 ```sh
 defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add \
-  '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = -14899; "KeyboardLayout Name" = "de-ch"; }'
+  '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = 14899; "KeyboardLayout Name" = "de-ch"; }'
 
 defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add \
   '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = -15232; "KeyboardLayout Name" = "ru-de-ch"; }'
@@ -56,3 +56,31 @@ defaults read com.apple.HIToolbox AppleEnabledInputSources
 ```
 
 and fall back to the Input Sources pane if an entry does not take.
+
+## Why `de-ch` declares the Roman script
+
+`de-ch` is `group="0"` with a positive `id`.
+Ukelele writes `group="126"` and a negative `id` by default, and
+[TN2056](https://developer.apple.com/library/archive/technotes/tn2056/_index.html)
+is explicit about what that means:
+layouts that generate "Unicode characters not associated with any of the
+scripts listed above … are only available to Unicode applications,
+and have negative id values. They should be assigned to group 126."
+
+Second-class status is not what this layout wants.
+It is a Latin layout that produces nothing outside the Roman script,
+so it declares Roman (`group="0"`) and takes a positive `id`,
+which makes it available to every application rather than only to Unicode ones.
+The `id` collision rule is forgiving —
+"if this ID collides with that of another keyboard,
+the system will assign a new ID."
+
+`ru-de-ch` stays at `group="126"` with its negative `id`:
+it genuinely mixes Cyrillic with Latin,
+so no single script code describes it and 126 is the honest answer.
+
+The symptom that prompted this: with only a `group="126"` layout enabled,
+macOS greys out **−** for the stock Apple layout in
+System Settings → Keyboard → Text Input → Input Sources → Edit…,
+and keeps it enabled — it will not leave a machine whose only keyboard layout
+is one that half the system cannot use.
