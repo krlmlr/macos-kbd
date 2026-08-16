@@ -79,8 +79,23 @@ the system will assign a new ID."
 it genuinely mixes Cyrillic with Latin,
 so no single script code describes it and 126 is the honest answer.
 
-The symptom that prompted this: with only a `group="126"` layout enabled,
-macOS greys out **−** for the stock Apple layout in
+**The symptom originally claimed for this change was not caused by it.**
+The greyed-out **−** on the stock Apple layout, in
 System Settings → Keyboard → Text Input → Input Sources → Edit…,
-and keeps it enabled — it will not leave a machine whose only keyboard layout
-is one that half the system cannot use.
+was read here as macOS refusing to be left with a `group="126"` layout as its
+only keyboard layout. That was wrong, and the machine these layouts came from
+disproves it: it ran both layouts at `group="126"` with negative IDs, as bare
+`.keylayout` files, with the stock Swiss German removed and gone.
+
+The real cause was ordinary. The custom layout was *selected* but never
+*enabled* — absent from `AppleEnabledInputSources` while present in
+`AppleInputSourceHistory` — so the stock layout was the only enabled one left,
+and macOS will not remove the last of those. Enabling the layout for real makes
+the **−** live.
+
+The Roman declaration above stands on its own terms; it just never fixed
+anything. If you have an `AppleEnabledInputSources` entry from before this
+change, note that the `id` moved from `-14899` to `14899`: an entry naming an
+ID no installed layout has is pruned at login without a word, which produces
+exactly the selected-but-not-enabled state described above. Read the list back
+after writing it.
